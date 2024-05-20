@@ -1,16 +1,27 @@
-// gif,image
-const Gif = require('../../../assets/coffee/loading.gif');
-const backgroundLogin = require('../../../assets/coffee/bglogin.png');
 
 // react
-import { useEffect, useState } from "react";
-import { Animated, Dimensions } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { 
+  useEffect, 
+  useState,
+} from "react";
+import { 
+  Animated, 
+  Dimensions, 
+  ActivityIndicator, 
+} from 'react-native';
+import { 
+  LinearGradient,
+} from 'expo-linear-gradient';
+import { connect } from "react-redux";
 
 // const
 import {
   windowWidth
 } from '../../utlis/contans';
+
+// gif,image
+const Gif = require('../../../assets/coffee/loading.gif');
+const backgroundLogin = require('../../../assets/coffee/bglogin.png');
 
 // styled
 import { 
@@ -27,11 +38,18 @@ import {
     LoginBtn,
     TextLoginBtn,
 } from "./styled";
+import { userLoginRequest } from "../../actions";
+import { version } from "styled-components";
 
-export default Login = () => {
+const Login = ({
+  userStore,
+  userLogin,
+}) => {
 
-  const [marginRight, setRight] = useState(new Animated.Value(0));
+  // const [marginRight, setRight] = useState(new Animated.Value(0));
   const [isLogin, setIsLogin] = useState(false)
+  const [user, setUser] = useState({userName: '', passWord: ''})
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     // Animated.timing(marginRight, {
@@ -50,6 +68,13 @@ export default Login = () => {
     //   clearTimeout(TimeOutLoading)
     // }
   }, [])
+
+  console.log('Truong log userStore', userStore);
+
+  const onHandleSubmit = () => {
+    setIsLoading(true)
+    userLogin(user)
+  }
 
   return (
     <ViewContainer>
@@ -89,6 +114,7 @@ export default Login = () => {
               Username
             </FormTitle>
             <FormInput
+              onChangeText={e => setUser(prev => ({ ...prev, userName: e }))}
             />
             <FormTitle 
               style={{
@@ -97,15 +123,21 @@ export default Login = () => {
             >
               Phone Number
             </FormTitle>
-            <FormInput />
+            <FormInput
+              keyboardType='numeric'
+              secureTextEntry={true}
+              maxLength={11}
+              onChangeText={e => setUser(prev => ({ ...prev, passWord: e }))}
+            />
           </FormLogin>
 
-          <LoginBtn 
+          <LoginBtn
             style={{
               shadowColor: 'rgba(0, 0, 0, 0.25)',
               shadowOffset: { width: 0, height: 4 },
               shadowRadius: 4
             }}
+            onPress={onHandleSubmit}
           >
             <LinearGradient 
               start={{ x: 0, y: 0 }}
@@ -113,12 +145,29 @@ export default Login = () => {
               colors={['#cb8a58', '#562b1a']} 
               style={{flex: 1, justifyContent: 'center'}}
             >
-              <TextLoginBtn>Login</TextLoginBtn>
+              <TextLoginBtn>
+                {isLoading ? <ActivityIndicator size="small" color="#ffffff" /> : "Login"}
+              </TextLoginBtn>
             </LinearGradient>
           </LoginBtn>
         </ContentLogin>
       </ViewLogin>
     </ViewContainer>
-    
   );
 };
+
+const mapStateToProps = state => {
+  return {
+    userStore: state.user
+  }
+}
+
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    userLogin: (user) => {
+      dispatch(userLoginRequest(user))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
