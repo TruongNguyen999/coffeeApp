@@ -7,6 +7,10 @@ const reducers = (state = initialstate, action) => {
         case Types.USER_LOGIN:
             state = action.payload
             return state;
+
+        case Types.USER_LOGGOUT:
+            state = []
+            return state;
         default:
             return state
     }

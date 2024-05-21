@@ -9,6 +9,12 @@ const reducers = (state = initialstate, action) => {
 
         case Types.USER_INOT_DEFAULT:
             return Types.USER_INOT_DEFAULT;
+
+        case Types.USER_LOGGED:
+            return Types.USER_LOGGED;
+
+        case Types.USER_LOGGOUT:
+            return Types.USER_LOGGOUT;
             
         default:
             return state

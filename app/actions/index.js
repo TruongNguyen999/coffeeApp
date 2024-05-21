@@ -16,14 +16,22 @@ const userLoginStore = (user) => {
     }
 }
 
+export const userLoggout = () => {
+    return {
+        type: Types.USER_LOGGOUT
+    }
+}
+
 export const userLoginRequest = (user) => {
     return dispatch => {
-        return callApi('user', 'GET', null).then(res => {
-            if(res){
-                if(res.userName === user.userName && res.passWord === user.passWord){
-                    dispatch(userLoginStore(res))
+        return callApi('user', 'GET', null).then(async res => {
+            if(res[0]){
+                if(res[0].userName === user.userName.toLowerCase() && res[0].passWord === user.passWord.toLowerCase()){
+                    await dispatch(userLoginStore(res[0]))
+                    await dispatch(Noti(Types.USER_LOGGED))
                 }else{
                     dispatch(Noti(Types.USER_FAIL))
+                    dispatch(userLoggout())
                 }
             }else{
                 dispatch(Noti(Types.USER_INOT_DEFAULT))

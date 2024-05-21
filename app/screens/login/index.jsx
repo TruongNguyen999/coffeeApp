@@ -42,7 +42,6 @@ import { userLoginRequest } from "../../actions";
 import { version } from "styled-components";
 
 const Login = ({
-  userStore,
   userLogin,
 }) => {
 
@@ -69,11 +68,12 @@ const Login = ({
     // }
   }, [])
 
-  console.log('Truong log userStore', userStore);
-
   const onHandleSubmit = () => {
     setIsLoading(true)
-    userLogin(user)
+
+    if(user.userName !== '' || user.passWord !== '') {
+      userLogin(user)
+    }
   }
 
   return (
@@ -121,12 +121,10 @@ const Login = ({
                 lineHeight: 26
               }}
             >
-              Phone Number
+              Password
             </FormTitle>
             <FormInput
-              keyboardType='numeric'
-              secureTextEntry={true}
-              maxLength={11}
+              secureTextEntry
               onChangeText={e => setUser(prev => ({ ...prev, passWord: e }))}
             />
           </FormLogin>
@@ -138,6 +136,7 @@ const Login = ({
               shadowRadius: 4
             }}
             onPress={onHandleSubmit}
+            disabled={isLoading}
           >
             <LinearGradient 
               start={{ x: 0, y: 0 }}
@@ -158,7 +157,6 @@ const Login = ({
 
 const mapStateToProps = state => {
   return {
-    userStore: state.user
   }
 }
 
