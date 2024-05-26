@@ -6,7 +6,7 @@ const HomeStackContainer = createNativeStackNavigator();
 
 function HomeStackScreenContainer() {
   return (
-    <HomeStackContainer.Navigator>
+    <HomeStackContainer.Navigator screenOptions={{ headerShown: false }}>
       <HomeStackContainer.Screen name="Home" component={HomeScreen} />
       <HomeStackContainer.Screen name="Details" component={DetailsScreen} />
     </HomeStackContainer.Navigator>

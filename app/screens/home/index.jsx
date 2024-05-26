@@ -1,14 +1,26 @@
-import { View, Text, Button } from "react-native";
+import {
+  Header,
+  HomeContainer,
+  ImgLocation,
+  Location,
+  TextLocation,
+  Phone,
+} from "./styled";
+
+const location = require("../../../assets/coffee/location.png");
+const phone = require("../../../assets/coffee/phone.png");
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{ color: "red" }}>Home screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate("Details")}
-      />
-    </View>
+    <HomeContainer>
+      <Header>
+        <Location>
+          <ImgLocation source={location} />
+          <TextLocation>Ukraine, Ivano-Frankivsk, Konovaltsya 132</TextLocation>
+        </Location>
+        <Phone source={phone} />
+      </Header>
+    </HomeContainer>
   );
 };
 
